@@ -4,7 +4,7 @@ import { getItemBaseDetails } from "./api/getdata";
 
 function App() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
-
+  const [itembasedetails, setItembaseDetails] = useState<any>([]);
   useEffect(() => {
     getItemBaseDetails().then(
       // success
@@ -12,6 +12,12 @@ function App() {
         setIsLoading(() => {
           return false;
         });
+
+        setItembaseDetails(()=>{
+          return productsdetails.itemsBasicDetails;
+        });
+
+
         console.log(productsdetails);
       },
       //fail
@@ -34,12 +40,20 @@ function App() {
         )}
 
         {!isLoading && (
-          <div className="d-flex justify-content-center row">
+
+
+          itembasedetails.map((item:any, index: number) => {
+            return <div key={index} > 
+            
+            <div className="d-flex justify-content-center row">
             <div className="col-md-10">
               <div>
                 <div className="row p-2 bg-white border rounded mt-2">
                   <div className="col-md-3 mt-1">
-                    <img className="img-fluid img-responsive rounded product-image" />
+                    <img className="img-fluid img-responsive rounded product-image" 
+                    src={item.imageName}
+                    />
+
                   </div>
                   <div className="col-md-6 mt-1">
                     <div
@@ -49,7 +63,7 @@ function App() {
                       }}
                     >
                       <div>
-                        <h1>itemName</h1>
+                        <h1>{item.itemName}</h1>
                       </div>
                       <div>
                         <div id="plusand">
@@ -57,7 +71,7 @@ function App() {
                             <i className="fas fa-minus"></i>
                           </button>
                           <span style={{ fontSize: "large" }}>
-                            itemCartCount
+                            {item.itemCartCount}
                           </span>
                           <button type="button" className="btn1">
                             <i className="fas fa-plus"></i>
@@ -81,31 +95,31 @@ function App() {
                         </div>
                       </div>
                       <div className="d-flex flex-row align-items-center">
-                        <h2 className="mr-1">item.discountPrice</h2>
+                        <h2 className="mr-1">{item.discountPrice}</h2>
                         <br />
-                        <h4 className="strike-text">item.actualPrice</h4>
+                        <h4 className="strike-text">{item.actualPrice}</h4>
                       </div>
                     </div>
                     <div className="mt-1 mb-1 spec-1 text-muted">
                       <span className="dot"></span>
-                      <span>itemDetail1</span>
+                      <span>{item.itemDetail1}</span>
                       <span className="dot"></span>
-                      <span>itemDetail2</span>
+                      <span>{item.itemDetail2}</span>
                       <span className="dot"></span>
-                      <span>itemDetail3 </span>
+                      <span>{item.itemDetail3}</span>
                       <span className="dot"></span>
-                      <span>itemDetail4</span>
+                      <span>{item.itemDetail4}</span>
                       <span className="dot"></span>
-                      <span>itemDetail5</span>
+                      <span>{item.itemDetail5}</span>
                       <span className="dot"></span>
                       <span>
-                        itemDetail6
+                      {item.itemDetail6}
                         <br />
                       </span>
                     </div>
 
                     <p className="text-justify para mb-0 badge bg-primary text-wrap">
-                      description <br />
+                      {item.description} <br />
                       <br />
                     </p>
                   </div>
@@ -121,7 +135,17 @@ function App() {
               </div>
             </div>
 
-            <div className="col-md-2">
+          
+          </div>
+            
+            
+            
+            </div>
+          })
+
+          
+        )}
+          <div className="col-md-2">
               <div className="row p-2 bg-white border rounded mt-2">
                 <div>Clear bag</div>
                 <div className="d-flex flex-column mt-4">
@@ -134,8 +158,6 @@ function App() {
                 </div>
               </div>
             </div>
-          </div>
-        )}
       </div>
       <div className="alert alert-success" role="alert" id="alert">
         <button
