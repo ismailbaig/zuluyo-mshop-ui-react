@@ -1,12 +1,15 @@
 import React, { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import "./NavBar.css";
 import { MenuData } from "./MenuData";
 import { useAuth0 } from "@auth0/auth0-react";
 
-export const NavBar = () => {
+interface NavBarProps {}
+
+export const NavBar: React.FC<NavBarProps> = () => {
   const [clicked, setClicked] = useState(false);
   const { loginWithRedirect, isAuthenticated, logout, user } = useAuth0();
+
   return (
     <div>
       <nav className="NavbarItems">
@@ -20,19 +23,17 @@ export const NavBar = () => {
           ></i>
         </div>
         <ul className={clicked ? "nav-menu active" : "nav-menu"}>
-          {MenuData.map((item, index) => {
-            return (
-              <li key={index}>
-                <NavLink to={item.url} className={item.cName}>
-                  <i className={item.icon}></i>
-                  {item.title}
-                </NavLink>
-              </li>
-            );
-          })}
+          {MenuData.map((item, index) => (
+            <li key={index}>
+              <NavLink to={item.url} className={item.cName}>
+                <i className={item.icon}></i>
+                {item.title}
+              </NavLink>
+            </li>
+          ))}
           {isAuthenticated ? (
             <li>
-              <NavLink
+              <NavLink to="/logout"
                 className="nav-links-mobile"
                 onClick={() =>
                   logout({ logoutParams: { returnTo: window.location.origin } })
@@ -43,7 +44,7 @@ export const NavBar = () => {
             </li>
           ) : (
             <li>
-              <NavLink
+              <NavLink to="/login"
                 className="nav-links-mobile"
                 onClick={() => loginWithRedirect()}
               >
@@ -56,3 +57,5 @@ export const NavBar = () => {
     </div>
   );
 };
+
+export default NavBar;
